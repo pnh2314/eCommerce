@@ -18,10 +18,10 @@ router.use('/', (req, res, next) => {
 })
 
 // ----- check api-key ----- //
-router.use(checkApiKey)
+// router.use(checkApiKey)
 
 // ----- check permission ----- //
-router.use(checkPermission('0000'))
+// router.use(checkPermission('0000'))
 
 router.use('/v1/api/order', orderRoute)
 router.use('/v1/api/cart', cartRoute)
