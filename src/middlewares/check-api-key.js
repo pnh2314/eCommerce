@@ -3,7 +3,7 @@ import findApiKey from '../models/repositories/api-key.repo.js'
 const checkApiKey = async (req, res, next) => {
   try {
     // check apiKey in headers
-    const apiKey = req.headers['x-api-key'].toString()
+    const apiKey = req.headers['x-api-key']
     if (!apiKey) return res.status(403).json({ msg: 'Forbidden Error' })
 
     // check apiKey in database

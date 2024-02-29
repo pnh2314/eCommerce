@@ -13,17 +13,21 @@ import orderRoute from './order.route.js'
 
 const router = express.Router()
 
-// ----- check api-key ----- //
-router.use(checkApiKey)
+router.use('/', (req, res, next) => {
+  res.end('hello')
+})
 
-// ----- check permission ----- //
-router.use(checkPermission('0000'))
+// // ----- check api-key ----- //
+// router.use(checkApiKey)
 
-router.use('/v1/api/order', orderRoute)
-router.use('/v1/api/cart', cartRoute)
-router.use('/v1/api/user', userRoute)
-router.use('/v1/api/voucher', voucherRoute)
-router.use('/v1/api/product', productRoute)
-router.use('/v1/api/access', accessRoute)
+// // ----- check permission ----- //
+// router.use(checkPermission('0000'))
+
+// router.use('/v1/api/order', orderRoute)
+// router.use('/v1/api/cart', cartRoute)
+// router.use('/v1/api/user', userRoute)
+// router.use('/v1/api/voucher', voucherRoute)
+// router.use('/v1/api/product', productRoute)
+// router.use('/v1/api/access', accessRoute)
 
 export default router
