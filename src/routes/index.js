@@ -14,7 +14,7 @@ import orderRoute from './order.route.js'
 const router = express.Router()
 
 router.use('/', (req, res, next) => {
-  res.end('hello')
+  res.end('eCommerce API by Hung Pham')
 })
 
 // ----- check api-key ----- //
