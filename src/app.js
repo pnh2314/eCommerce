@@ -16,11 +16,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors()) // disable cors policy
 
 // ------ init database ------ //
-import Database from './databases/init.mongodb.js'
+import Database from './v1/databases/init.mongodb.js'
 new Database()
 
 // ------ init routes ------ //
-import router from './routes/index.js'
+import router from './v1/routes/index.js'
 app.use(router)
 
 // 404 Not Found Middleware

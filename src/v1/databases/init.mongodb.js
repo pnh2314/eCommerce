@@ -14,7 +14,7 @@ export default class Database {
 
   connect() {
     mongoose
-      .connect(CONNECTION_STRING)
+      .connect('mongodb://localhost:27017')
       .then(() => console.log('A mongodb connection is established!'))
       .catch(e => console.log('Connection error!', e))
 

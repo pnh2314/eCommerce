@@ -13,15 +13,16 @@ import orderRoute from './order.route.js'
 
 const router = express.Router()
 
-router.use('/', (req, res, next) => {
-  res.end('eCommerce API by Hung Pham')
-})
+// router.use('/', (req, res, next) => {
+//   res.write('hehee')
+//   res.end('eCommerce API by Hung Pham')
+// })
 
 // ----- check api-key ----- //
-// router.use(checkApiKey)
+router.use(checkApiKey)
 
 // ----- check permission ----- //
-// router.use(checkPermission('0000'))
+router.use(checkPermission('0000'))
 
 router.use('/v1/api/order', orderRoute)
 router.use('/v1/api/cart', cartRoute)

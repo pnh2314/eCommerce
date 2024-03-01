@@ -38,20 +38,20 @@ const getAllPublished = async ({ filter, limit = 20, skip = 0 }) => {
 const switchState = async productId => {
   const product = await productModel.findById(productId).lean()
   const newState = product.state === 'drafting' ? 'published' : 'drafting'
-  const update = { prod_state: newState }
-  const option = { returnDocument: 'after', select: 'prod_name prod_state' }
+  const update = { state: newState }
+  const option = { returnDocument: 'after', select: 'name state' }
   return await productModel.findByIdAndUpdate(productId, update, option).lean()
 }
 
 const getAllProducts = async () => {
-  const filter = { prod_state: 'published' }
-  const select = ['prod_thumbnail', 'prod_name', 'prod_price', 'prod_quantity']
+  const filter = { state: 'published' }
+  const select = ['thumbnail', 'name', 'price', 'quantity']
   return await productModel.find(filter).select(select).limit(20).skip(0).lean()
 }
 
 const getProduct = async productId => {
-  const filter = { prod_state: 'published', _id: productId }
   const select = ['-__v', '-createdAt', '-updatedAt']
+  const filter = { state: 'published', _id: productId }
   return await productModel.findOne(filter).select(select).lean()
 }
 

@@ -1,3 +1,5 @@
+// ! viết lại toàn bộ product service
+
 // module
 import {
   createProduct,
@@ -83,6 +85,7 @@ class ProductFactory {
   switchState = async req => {
     const productId = req.params.productId
     const updatedProduct = await switchState(productId)
+    console.log(`ProductFactory - updatedProduct:`, updatedProduct)
     if (!updatedProduct) throw new BadRequestError({ message: 'Product state is not changed successfully !' })
     return {
       updatedProduct,
@@ -94,17 +97,21 @@ class ProductFactory {
   updateProduct = async req => {
     const productId = req.params.productId
     // check if the product belongs to the user who is sending the request
-    const prod = await productModel.findById(productId)
+    const prod = await productModel.findById(productId).lean()
+    console.log(`ProductFactory - prod:`, prod)
     if (prod.merchant.toString() !== req.headers['x-client-id']) {
       throw new ForbiddenError({ message: 'You are not allowed to access this resource!' })
     }
 
     // rm null value
     const updateFields = removeNullValue({ object: req.body })
+    console.log(`ProductFactory - updateFields:`, updateFields)
     const categoryClass = this.classList[prod.category]
+    console.log(`ProductFactory - categoryClass:`, categoryClass)
     if (!categoryClass) throw new BadRequestError({ message: `Invalid category ${category}` })
 
-    const updatedProduct = await new categoryClass(updateFields).updateProduct({ productId })
+    const updatedProduct = await new categoryClass(updateFields).updateProduct({ productId }) // !! error
+    console.log(`ProductFactory - updatedProduct:`, updatedProduct)
     if (!updatedProduct) throw new BadRequestError({ message: 'Can not update product!' })
     return {
       updatedProduct,
@@ -159,11 +166,19 @@ class Product {
   }
 
   async updateProduct({ productId }) {
+    console.log('Product:::', this)
     return await updateProduct({ model: productModel, productId, updateFields: this })
   }
 }
 
 class Clothes extends Product {
+  constructor() {
+    super()
+    this.brand = super.attributes.brand
+    this.size = super.attributes.size
+    this.material = super.attributes.material
+  }
+
   async createProduct() {
     const newProductAttributes = await createProduct({ model: clothing, payload: this.attributes })
     if (!newProductAttributes) throw new BadRequestError('create new clothes failed')
@@ -175,6 +190,7 @@ class Clothes extends Product {
   }
 
   async updateProduct({ productId }) {
+    console.log('Clothes:::', this)
     const updateProductAttributes = await updateProduct({
       model: clothing,
       updateFields: this.attributes,
@@ -183,6 +199,7 @@ class Clothes extends Product {
     if (!updateProductAttributes) throw new BadRequestError('update product attributes failed!')
 
     const updatedProduct = await super.updateProduct({ productId })
+    console.log(`Clothes - updateProduct - updatedProduct:`, updatedProduct)
     if (!updatedProduct) throw new BadRequestError('update product failed!')
 
     return updatedProduct
